@@ -3,9 +3,9 @@ using System.Collections;
 
 public class MoveTerrain : MonoBehaviour
 {
-    float Speed = 12f;
+    float Speed = 12; //12
 
-    Vector3 StartPos = new Vector3(-955, 0, -2109);
+    Vector3 StartPos = new Vector3(-955, 0, -5061);
     bool go;
 
     // Use this for initialization
@@ -18,7 +18,7 @@ public class MoveTerrain : MonoBehaviour
     {
         transform.Translate(Vector3.forward * Time.deltaTime * Speed);
 
-        if (transform.position.z >= 20 + float.Epsilon && !go)
+        if (transform.position.z >= 2 + float.Epsilon && !go)
         {
             go = true;
             GameObject terrain;
