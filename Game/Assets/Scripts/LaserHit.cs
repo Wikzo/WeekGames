@@ -12,7 +12,7 @@ public class LaserHit : MonoBehaviour
         line = GetComponent<LineRenderer>();
         if (line == null) Debug.Log("ERROR, needs line renderer!");
 
-        if (!UseEyes)
+        if (UseEyes)
             line.enabled = false;
 
     }
@@ -20,7 +20,7 @@ public class LaserHit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!UseEyes)
+        if (UseEyes)
             return;
 
         // start position

@@ -8,13 +8,6 @@ public class MoveTerrain : MonoBehaviour
     Vector3 StartPos = new Vector3(-955, 0, -5061);
     bool go;
 
-    // Use this for initialization
-    void Start()
-    {
-        Screen.showCursor = false;
-
-    }
-
     // Update is called once per frame
     void Update()
     {

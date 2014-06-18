@@ -43,10 +43,10 @@ public class MouseLook : MonoBehaviour {
 		}
 		else if (axes == RotationAxes.MouseX)
 		{
-            float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-            rotationX = Mathf.Clamp(rotationX, minimumX, maximumX);
+			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+			rotationX = Mathf.Clamp(rotationX, minimumX, maximumX);
 
-            transform.Rotate(0, rotationX, 0);
+			transform.Rotate(0, rotationX, 0);
 
 		}
 		else
