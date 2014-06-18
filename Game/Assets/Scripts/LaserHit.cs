@@ -4,19 +4,25 @@ using System.Collections;
 public class LaserHit : MonoBehaviour
 {
     LineRenderer line;
-    public GameObject g;
+    public bool UseEyes = true;
+    //public GameObject g;
     // Use this for initialization
     void Start()
     {
         line = GetComponent<LineRenderer>();
         if (line == null) Debug.Log("ERROR, needs line renderer!");
 
-        Screen.showCursor = false;
+        if (!UseEyes)
+            line.enabled = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!UseEyes)
+            return;
+
         // start position
         line.SetPosition(0, transform.position);
 
@@ -27,12 +33,11 @@ public class LaserHit : MonoBehaviour
         {
             if (hit.collider)
             {
-                Debug.DrawLine(transform.position, hit.point);
+                //Debug.DrawLine(transform.position, hit.point);
                 line.SetPosition(1, hit.point);
 
                 //print(hit.transform.name);
-
-                g.transform.position = hit.point;
+                //g.transform.position = hit.point;
             }
         }
         else
