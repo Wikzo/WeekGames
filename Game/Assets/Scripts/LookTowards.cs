@@ -8,7 +8,15 @@ public class LookTowards : MonoBehaviour
     Vector3 leftRelative, rightRelative;
     Quaternion leftRotation, rightRotation;
 
+    float lerpSpeed = 0.01f;
+    float MinLerpSpeed = 0.001f;
+    float MaxLerpSpeed = 0.005f;
+
+    bool hasFoundTarget;
     int current;
+    Vector3 defaultForwardDir;
+    Quaternion defaultRotation;
+
 
 
     // Use this for initialization
@@ -27,32 +35,25 @@ public class LookTowards : MonoBehaviour
                 rightEye = child;
         }
 
+        defaultForwardDir = leftEye.TransformDirection(Vector3.forward);
+        defaultRotation = leftEye.rotation;
+
         // pick random target
-        current = Random.Range(0, GameManager.Instance.transforms.Length);
-        float random = Random.Range(1f, 2f);
-        StartCoroutine(PickNewSpotToLookAt(random));
+        StartCoroutine(PickNewSpotToLookAt(Random.Range(0f, 0.5f)));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-            current = Random.Range(0, GameManager.Instance.transforms.Length);
-
+        if (!hasFoundTarget)
+            return;
 
         // left eye
-        leftRelative = GameManager.Instance.transforms[current].transform.position - leftEye.position;
-        leftRotation = Quaternion.LookRotation(leftRelative);
-        //leftEye.rotation = leftRotation;
-        leftEye.rotation = Quaternion.Lerp(leftEye.rotation, leftRotation, Time.time * 0.01f);
+        leftEye.rotation = Quaternion.Lerp(leftEye.rotation, leftRotation, Time.time * lerpSpeed);
 
 
         // right eye
-        rightRelative = GameManager.Instance.transforms[current].transform.position - rightEye.position;
-        rightRotation = Quaternion.LookRotation(rightRelative);
-        //rightEye.rotation = rightRotation;
-        rightEye.rotation = Quaternion.Lerp(rightEye.rotation, rightRotation, Time.time * 0.01f);
-
+        rightEye.rotation = Quaternion.Lerp(rightEye.rotation, rightRotation, Time.time * lerpSpeed);
 
 
         //transform.LookAt(t);
@@ -64,29 +65,55 @@ public class LookTowards : MonoBehaviour
 
         int tries = 0;
         float dot = 0;
-        int oldCurrent = current;
+        bool hasFoundOne = false;
 
         // only pick targets in front of the eyes
-        if (dot < 0.5f && tries < 10)
+        if (!!hasFoundOne || tries < 10)
         {
-            current = Random.Range(0, GameManager.Instance.transforms.Length);
-            
-            Vector3 heading = (GameManager.Instance.transforms[current].position - leftEye.position).normalized;
-            dot = Vector3.Dot(heading, GameManager.Instance.transforms[current].position);
-            
+            int randomIndex = Random.Range(0, GameManager.Instance.transforms.Length);
+
+            //Vector3 heading = (GameManager.Instance.transforms[randomIndex].position - leftEye.position).normalized;
+            //dot = Vector3.Dot(heading, GameManager.Instance.transforms[randomIndex].position);
+
+            //Vector3 eyes = leftEye.TransformDirection(Vector3.forward);
+            Vector3 dir = (GameManager.Instance.transforms[randomIndex].position - leftEye.position).normalized;
+            dot = Vector3.Dot(dir, defaultForwardDir);
+
+            tries++;
+
+            // target is within field of vision
+            if (dot > 0.3f)
+            {
+                current = randomIndex;
+                //print("found " + GameManager.Instance.transforms[randomIndex].name);
+                hasFoundOne = true;
+
+                lerpSpeed = Random.Range(MinLerpSpeed, MaxLerpSpeed);
+
+                // left eye
+                leftRelative = GameManager.Instance.transforms[current].transform.position - leftEye.position;
+                leftRotation = Quaternion.LookRotation(leftRelative);
 
 
-            /*Vector3 eyes = leftEye.TransformDirection(Vector3.forward);
-            Vector3 target = (GameManager.Instance.transforms[current].position - leftEye.position).normalized;
-                dot = Vector3.Dot(eyes, target);
-            
-            */
-                tries++;
+                // right eye
+                rightRelative = GameManager.Instance.transforms[current].transform.position - rightEye.position;
+                rightRotation = Quaternion.LookRotation(rightRelative);
 
+                hasFoundTarget = true;
+
+
+            }
+            else // target is behind (go to default)
+            {
+                //hasFoundTarget = false; // no new target = don't move
+
+                //leftRotation = defaultRotation;
+                //rightRotation = defaultRotation;
+            }
 
         }
 
-        float random = Random.Range(1f, 2);
+        float random = Random.Range(1f, 5f);
         StartCoroutine(PickNewSpotToLookAt(random));
     }
 

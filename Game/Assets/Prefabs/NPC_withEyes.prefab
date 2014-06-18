@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e26c29cde865b4dbab50d377b29a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseEyes: 1
+  LaserEyes: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e26c29cde865b4dbab50d377b29a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseEyes: 1
+  LaserEyes: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -577,8 +577,8 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 500}
   m_Parameters:
-    startWidth: .100000001
-    endWidth: .100000001
+    startWidth: .0500000007
+    endWidth: .0500000007
     m_StartColor:
       serializedVersion: 2
       rgba: 4294967295
@@ -610,8 +610,8 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 500}
   m_Parameters:
-    startWidth: .100000001
-    endWidth: .100000001
+    startWidth: .0500000007
+    endWidth: .0500000007
     m_StartColor:
       serializedVersion: 2
       rgba: 4294967295
