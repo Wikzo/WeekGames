@@ -8,6 +8,7 @@ public class SunGlasses : MonoBehaviour
     byte alpha = 190;
 
     bool toggleGlasses = false;
+    bool showBlack = false;
 
     Animator anim;
 
@@ -21,14 +22,29 @@ public class SunGlasses : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            toggleGlasses = !toggleGlasses;
-            //anim.Play
+            // pick up glasses, only if they are currently visible
+            if (!toggleGlasses && gameObject.renderer.isVisible)
+            {
+                toggleGlasses = !toggleGlasses;
+                anim.SetBool("toggle", toggleGlasses);
+            }
+            else if (toggleGlasses) // put down glasses
+            {
+                toggleGlasses = !toggleGlasses;
+                anim.SetBool("toggle", toggleGlasses);
+            }
+
         }
+    }
+
+    void ToggleGlasses()
+    {
+        showBlack = !showBlack;
     }
 
     void OnGUI()
     {
-        if (toggleGlasses)
+        if (showBlack)
         {
             GUI.color = new Color32(255, 255, 255, alpha);
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Black, ScaleMode.StretchToFill);

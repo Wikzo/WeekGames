@@ -543,25 +543,25 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: {x: -3.15945673, y: .879186749, z: -.228515267}
-        inSlope: {x: .0821751058, y: .546184123, z: .534364522}
-        outSlope: {x: .0821751058, y: .546184123, z: .534364522}
-        tangentMode: 0
+        value: {x: -3.15945673, y: .896588504, z: -.228515267}
+        inSlope: {x: .0583652854, y: .536047161, z: .534364522}
+        outSlope: {x: .0583652854, y: .536047161, z: .534364522}
+        tangentMode: 1049053472
       - time: 1.7166667
-        value: {x: -3.01838946, y: 1.81680286, z: .688810527}
-        inSlope: {x: .0411764719, y: .273683518, z: .374708563}
-        outSlope: {x: .0411764719, y: .273683518, z: .374708563}
-        tangentMode: 126522008
+        value: {x: -3.05926299, y: 1.81680286, z: .688810527}
+        inSlope: {x: .0292787142, y: .268615037, z: .374708563}
+        outSlope: {x: .0292787142, y: .268615037, z: .374708563}
+        tangentMode: 0
       - time: 2.45000005
-        value: {x: -3.01825905, y: 1.81767035, z: .846515775}
-        inSlope: {x: 8.89192888e-05, y: .000591467717, z: .938135982}
-        outSlope: {x: 8.89192888e-05, y: .000591467717, z: .938135982}
-        tangentMode: 7
+        value: {x: -3.05912209, y: 1.81767035, z: .846515775}
+        inSlope: {x: -4.4833534e-05, y: .000591467717, z: .938135982}
+        outSlope: {x: -4.4833534e-05, y: .000591467717, z: .938135982}
+        tangentMode: 0
       - time: 2.95000005
-        value: {x: -3.01825905, y: 1.81767035, z: 1.67712545}
-        inSlope: {x: 0, y: 0, z: 1.66121936}
-        outSlope: {x: 0, y: 0, z: 1.66121936}
-        tangentMode: 112197668
+        value: {x: -3.05926299, y: 1.81767035, z: 1.67712545}
+        inSlope: {x: -.00028181076, y: 0, z: 1.66121936}
+        outSlope: {x: -.00028181076, y: 0, z: 1.66121936}
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
     path: 
@@ -611,23 +611,23 @@ AnimationClip:
       m_Curve:
       - time: 0
         value: -3.15945673
-        inSlope: .0821751058
-        outSlope: .0821751058
+        inSlope: .0583652854
+        outSlope: .0583652854
         tangentMode: 10
       - time: 1.7166667
-        value: -3.01838946
-        inSlope: .0411764719
-        outSlope: .0411764719
+        value: -3.05926299
+        inSlope: .0292787142
+        outSlope: .0292787142
         tangentMode: 10
       - time: 2.45000005
-        value: -3.01825905
-        inSlope: 8.89192888e-05
-        outSlope: 8.89192888e-05
+        value: -3.05912209
+        inSlope: -4.4833534e-05
+        outSlope: -4.4833534e-05
         tangentMode: 10
       - time: 2.95000005
-        value: -3.01825905
-        inSlope: 0
-        outSlope: 0
+        value: -3.05926299
+        inSlope: -.00028181076
+        outSlope: -.00028181076
         tangentMode: 10
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -639,14 +639,14 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: .879186749
-        inSlope: .546184123
-        outSlope: .546184123
+        value: .896588504
+        inSlope: .536047161
+        outSlope: .536047161
         tangentMode: 10
       - time: 1.7166667
         value: 1.81680286
-        inSlope: .273683518
-        outSlope: .273683518
+        inSlope: .268615037
+        outSlope: .268615037
         tangentMode: 10
       - time: 2.45000005
         value: 1.81767035
@@ -2867,4 +2867,11 @@ AnimationClip:
     path: 
     classID: 4
     script: {fileID: 0}
-  m_Events: []
+  m_Events:
+  - time: 2.6833334
+    functionName: ToggleGlasses
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
