@@ -43,5 +43,6 @@ public class GameManager : MonoBehaviour
     public Transform LeftEye;
 
     public Transform[] transforms;
+    public PlayerCamEffects PlayerCam;
 
 }
