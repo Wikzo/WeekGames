@@ -9,6 +9,7 @@ public class CopyPastePosition : EditorWindow
     //string nameOfLastObject = "";
 
     bool pos, rot, scale;
+    bool local;
 
     // Add menu item named "My Window" to the Window menu
     [MenuItem("Window/CopyPastePosition")]
@@ -29,6 +30,7 @@ public class CopyPastePosition : EditorWindow
         pos = EditorGUILayout.Toggle("Position", pos);
         rot = EditorGUILayout.Toggle("Rotation", rot);
         scale = EditorGUILayout.Toggle("Scale", scale);
+        local = EditorGUILayout.Toggle("Use local coordinates", local);
 
         if (GUILayout.Button("Copy"))
             CopyPosition();
@@ -49,12 +51,24 @@ public class CopyPastePosition : EditorWindow
 
         //nameOfLastObject = obj.name;
 
-        if (pos)
-            Position = obj.transform.position;
-        if (rot)
-            Rotation = obj.transform.eulerAngles;
-        if (scale)
-            Scale = obj.transform.localScale;
+        if (local)
+        {
+            if (pos)
+                Position = obj.transform.localPosition;
+            if (rot)
+                Rotation = obj.transform.localEulerAngles;
+            if (scale)
+                Scale = obj.transform.localScale;
+        }
+        else // global
+        {
+            if (pos)
+                Position = obj.transform.position;
+            if (rot)
+                Rotation = obj.transform.eulerAngles;
+            if (scale)
+                Scale = obj.transform.localScale;
+        }
     }
 
     void PastePosition()
@@ -64,12 +78,24 @@ public class CopyPastePosition : EditorWindow
         if (obj == null)
             return;
 
-        if (scale && Scale != null)
-            obj.transform.localScale = Scale;
-        if (rot && Rotation != null)
-            obj.transform.eulerAngles = Rotation;
-        if (pos && Position != null)
-            obj.transform.position = Position;
+        if (local)
+        {
+            if (scale && Scale != null)
+                obj.transform.localScale = Scale;
+            if (rot && Rotation != null)
+                obj.transform.localEulerAngles = Rotation;
+            if (pos && Position != null)
+                obj.transform.localPosition = Position;
+        }
+        else // global
+        {
+            if (scale && Scale != null)
+                obj.transform.localScale = Scale;
+            if (rot && Rotation != null)
+                obj.transform.eulerAngles = Rotation;
+            if (pos && Position != null)
+                obj.transform.position = Position;
+        }
     }
 
     void ResetAll()

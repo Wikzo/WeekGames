@@ -12,16 +12,31 @@ public class SunGlasses : MonoBehaviour
 
     Animator anim;
 
+    public AudioLowPassFilter LowPassFilter;
+
+    bool playingAnimationNow;
+
     void Start()
     {
         anim = GetComponent<Animator>();
+        LowPassFilter.enabled = false;
+
+        playingAnimationNow = false;
 
     }
 
     void Update()
     {
+        // only play animation one at a time
+        if (playingAnimationNow)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
+            // only play one animation at a time
+            //if (anim.GetCurrentAnimatorStateInfo(0).IsName("SunGlassesPutOn"))
+              //  return;
+
             // pick up glasses, only if they are currently visible
             if (!toggleGlasses && gameObject.renderer.isVisible)
             {
@@ -37,9 +52,20 @@ public class SunGlasses : MonoBehaviour
         }
     }
 
+    void PlayingAnimationNow()
+    {
+        playingAnimationNow = true;
+    }
+
+    void StoppingAnimationNow()
+    {
+        playingAnimationNow = false;
+    }
+
     void ToggleGlasses()
     {
         showBlack = !showBlack;
+        LowPassFilter.enabled = !LowPassFilter.enabled;
     }
 
     void OnGUI()

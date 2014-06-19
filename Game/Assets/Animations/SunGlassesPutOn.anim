@@ -591,7 +591,7 @@ AnimationClip:
   m_AnimationClipSettings:
     serializedVersion: 2
     m_StartTime: 0
-    m_StopTime: 2.95000005
+    m_StopTime: 3.0999999
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -2868,8 +2868,36 @@ AnimationClip:
     classID: 4
     script: {fileID: 0}
   m_Events:
+  - time: 0
+    functionName: StoppingAnimationNow
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: .0333333351
+    functionName: PlayingAnimationNow
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.61666656
+    functionName: PlayingAnimationNow
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 2.6833334
     functionName: ToggleGlasses
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 3.0999999
+    functionName: StoppingAnimationNow
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
