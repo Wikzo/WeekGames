@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
     public Transform LeftEye;
 
     public Transform[] transforms;
+    public Transform Outside;
     public PlayerCamEffects PlayerCam;
+
+    public bool SunGlassesOn;
 
 }

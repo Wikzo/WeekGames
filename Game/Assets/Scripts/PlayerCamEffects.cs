@@ -9,11 +9,10 @@ public class PlayerCamEffects : MonoBehaviour
     bool increasing;
     bool decreasing;
     bool countingDown;
-    public List<string> NPCsLookingAtPlayer;
+    public string NPCsLookingAtPlayer;
     public string PlayerLookingNPCTarget;
 
-    public bool NPCCanSeePlayer;
-    public bool PlayerCanSeeNPC;
+    AudioSource audio;
 
     Blur currentBlur;
     Vignetting currentVign;
@@ -25,10 +24,17 @@ public class PlayerCamEffects : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        audio = GetComponent<AudioSource>();
+        audio.volume = 0;
+        audio.enabled = false;
+
         enabled = false;
         increasing = false;
         decreasing = false;
         countingDown = false;
+
+        NPCsLookingAtPlayer = "null_npc";
+        PlayerLookingNPCTarget = "null_player";
 
         currentBlur = GetComponent<Blur>();
         currentVign = GetComponent<Vignetting>();
@@ -46,39 +52,44 @@ public class PlayerCamEffects : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnableEffects();
+        if (GameManager.Instance.SunGlassesOn)
+            enabled = false;
+        else
+            EnableEffects();
 
         if (enabled)
         {
-            //currentBlur.enabled = true;
+            currentBlur.enabled = true;
             currentVign.enabled = true;
-            //currentVortex.enabled = true;
+            currentVortex.enabled = true;
         }
         else
         {
             currentBlur.enabled = false;
             //currentVign.enabled = false;
-            currentVortex.enabled = false;
+            //currentVortex.enabled = false;
+
+            if (audio.volume > 0)
+                audio.volume -= Time.deltaTime * 0.2f;
+
+            if (currentVortex.angle > 0)
+                currentVortex.angle -= Time.deltaTime * 50;
         }
     }
 
     public void EnableEffects()
     {
-        if (PlayerCanSeeNPC)
+        if (NPCsLookingAtPlayer == PlayerLookingNPCTarget)
         {
-            foreach (string g in NPCsLookingAtPlayer)
-                if (g == PlayerLookingNPCTarget)
-                {
-                    if (!increasing)
-                    {
-                        increasing = true;
-                        StartCoroutine("Increase");
-                    }
+            if (!increasing)
+            {
+                increasing = true;
+                StartCoroutine("Increase");
+            }
 
-                    enabled = true;
-                    StopCoroutine("CountdownToDisable");
-                    StartCoroutine("CountdownToDisable");
-                }
+            enabled = true;
+            StopCoroutine("CountdownToDisable");
+            StartCoroutine("CountdownToDisable");
         }
         else if (!countingDown)
             StartCoroutine("CountdownToDisable");
@@ -89,18 +100,15 @@ public class PlayerCamEffects : MonoBehaviour
     IEnumerator CountdownToDisable()
     {
         countingDown = true;
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(0.5f);
         
         countingDown = false;
 
         enabled = false;
         increasing = false;
 
-        PlayerCanSeeNPC = false;
-        NPCCanSeePlayer = false;
-
-        NPCsLookingAtPlayer.Clear();
-        NPCsLookingAtPlayer.TrimExcess();
+        NPCsLookingAtPlayer = "null_npc";
+        PlayerLookingNPCTarget = "null_player";
 
         StartCoroutine("Decrease");
     }
@@ -123,6 +131,15 @@ public class PlayerCamEffects : MonoBehaviour
                 decreasing = false;
             }
 
+            if (currentBlur.blurSize > 0)
+                currentBlur.blurSize -= Time.deltaTime * 15;
+
+            if (audio.volume > 0)
+                audio.volume -= Time.deltaTime * 0.2f;
+
+            if (currentVortex.angle > 0)
+                currentVortex.angle -= Time.deltaTime * 50;
+
             //vortex.angle++;
             yield return null;
 
@@ -134,8 +151,24 @@ public class PlayerCamEffects : MonoBehaviour
     {
         while (increasing)
         {
+            audio.enabled = true;
+
+            if (audio.volume < 0.4f)
+                audio.volume += Time.deltaTime * 0.1f;
+
+            if (audio.volume > 0.15)
+            {
+                currentVortex.enabled = true;
+                if (currentVortex.angle < 300)
+                    currentVortex.angle += Time.deltaTime * 25;
+            }
+
             currentVign.intensity += Time.deltaTime*5;
-            //vortex.angle++;
+
+            if (currentBlur.blurSize < 2.5f)
+                currentBlur.blurSize += Time.deltaTime * 2;
+
+
             yield return null;
         }
     }

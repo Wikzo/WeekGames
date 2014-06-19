@@ -9,23 +9,21 @@ public class LaserHit : MonoBehaviour
     bool toggleLaserEyes = false;
 
     float eyeContactTime;
-    float eyeContactThreshold = 0.2f;
-    bool npcAddedToPlayerList;
+    float eyeContactThreshold = 0f;
 
     public bool IsNPC = true;
+
 
     //public GameObject g;
     // Use this for initialization
     void Start()
     {
         eyeContactTime = 0;
-        npcAddedToPlayerList = false;
 
         line = GetComponent<LineRenderer>();
         if (line == null) Debug.Log("ERROR, needs line renderer!");
 
-        if (!LaserEyes)
-            line.enabled = false;
+        line.enabled = false;
 
     }
 
@@ -36,12 +34,12 @@ public class LaserHit : MonoBehaviour
             return;
 
         if (Input.GetKeyDown(KeyCode.L))
-            toggleLaserEyes = !toggleLaserEyes;
+            line.enabled = !line.enabled;
 
-        if (toggleLaserEyes == true)
+
+        //if (toggleLaserEyes == true)
+        if (true)
         {
-            line.enabled = true;
-
             // start position
             line.SetPosition(0, transform.position);
 
@@ -64,14 +62,10 @@ public class LaserHit : MonoBehaviour
                         {
                             eyeContactTime += Time.deltaTime;
 
-                            print("npc looking at player");
-
-                            if (eyeContactTime > eyeContactThreshold)
-                            {
-                                GameManager.Instance.PlayerCam.NPCsLookingAtPlayer.Add(gameObject.tag);
-                                npcAddedToPlayerList = true;
-                                GameManager.Instance.PlayerCam.NPCCanSeePlayer = true;
-                            }
+                            //if (eyeContactTime > eyeContactThreshold)
+                            //{
+                                GameManager.Instance.PlayerCam.NPCsLookingAtPlayer = gameObject.tag;
+                            //}
 
                         }
                         else
@@ -87,23 +81,21 @@ public class LaserHit : MonoBehaviour
                     }
                     else if (!IsNPC) // player looking at npc
                     {
-                        if (hit.transform.tag == "NPC")
+                        string t = hit.transform.tag;
+                        if (t == "1" || t == "2" || t == "3" || t == "4" || t == "5" || t == "6" || t == "7" || t == "8" || t == "9" || t == "10" || t == "11")
                         {
                             eyeContactTime += Time.deltaTime;
 
-                            print("player looking at npc");
-
-                            if (eyeContactTime > eyeContactThreshold)
-                            {
-                                GameManager.Instance.PlayerCam.PlayerCanSeeNPC = true;
+                            //if (eyeContactTime > eyeContactThreshold)
+                            //{
                                 GameManager.Instance.PlayerCam.PlayerLookingNPCTarget = hit.transform.tag;
-                            }
+                            //}
 
                         }
                         else
                         {
-                            GameManager.Instance.PlayerCam.PlayerCanSeeNPC = false;
                             eyeContactTime = 0;
+                            GameManager.Instance.PlayerCam.PlayerLookingNPCTarget = "null_player";
                         }
                     }
                 }

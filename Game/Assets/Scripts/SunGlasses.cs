@@ -42,11 +42,15 @@ public class SunGlasses : MonoBehaviour
             {
                 toggleGlasses = !toggleGlasses;
                 anim.SetBool("toggle", toggleGlasses);
+
+                GameManager.Instance.SunGlassesOn = true;
             }
             else if (toggleGlasses) // put down glasses
             {
                 toggleGlasses = !toggleGlasses;
                 anim.SetBool("toggle", toggleGlasses);
+
+                GameManager.Instance.SunGlassesOn = false;
             }
 
         }

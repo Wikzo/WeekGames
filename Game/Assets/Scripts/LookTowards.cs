@@ -17,14 +17,13 @@ public class LookTowards : MonoBehaviour
     Vector3 defaultForwardDir;
     Quaternion defaultRotation;
 
+    public bool IsFrontNPC = false;
 
 
     // Use this for initialization
     void Start()
     {
         //StartCoroutine("LookEyes");
-
-        
 
         // get eyes
         foreach (Transform child in transform)
@@ -38,8 +37,37 @@ public class LookTowards : MonoBehaviour
         defaultForwardDir = leftEye.TransformDirection(Vector3.forward);
         defaultRotation = leftEye.rotation;
 
+        if (IsFrontNPC)
+            StartCoroutine(FrontNPC());
+        else
         // pick random target
         StartCoroutine(PickNewSpotToLookAt(Random.Range(0f, 0.5f)));
+    }
+
+    IEnumerator FrontNPC()
+    {
+        // so he doesnt start staring at player from the beginning
+
+        hasFoundTarget = true;
+
+        lerpSpeed = MaxLerpSpeed;
+
+        // left eye
+        leftRelative = GameManager.Instance.Outside.transform.position - leftEye.position;
+        leftRotation = Quaternion.LookRotation(leftRelative);
+
+        // right eye
+        rightRelative = GameManager.Instance.Outside.transform.position - rightEye.position;
+        rightRotation = Quaternion.LookRotation(rightRelative);
+
+        // set rotations directly (no lerp)
+        leftEye.rotation = leftRotation;
+        rightEye.rotation = rightRotation;
+
+
+        yield return new WaitForSeconds(1);
+        StartCoroutine(PickNewSpotToLookAt(Random.Range(0f, 0.5f)));
+
     }
 
     // Update is called once per frame
@@ -113,7 +141,7 @@ public class LookTowards : MonoBehaviour
 
         }
 
-        float random = Random.Range(1f, 5f);
+        float random = Random.Range(1f, 7f);
         StartCoroutine(PickNewSpotToLookAt(random));
     }
 
