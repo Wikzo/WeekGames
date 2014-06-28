@@ -1,4 +1,4 @@
-week1
-=====
+Weekgames
+====
 
-Weekgames #1
+Weekly games
