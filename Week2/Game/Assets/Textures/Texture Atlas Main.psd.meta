@@ -59,8 +59,8 @@ TextureImporter:
         y: 1887
         width: 382
         height: 150
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PunjiSticks
       rect:
@@ -69,8 +69,8 @@ TextureImporter:
         y: 1661
         width: 385
         height: 375
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: HealthPack
       rect:
@@ -89,17 +89,7 @@ TextureImporter:
         y: 1664
         width: 388
         height: 384
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Texture Atlas Main_6
-      rect:
-        serializedVersion: 2
-        x: 216
-        y: 1869
-        width: 5
-        height: 5
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Cannon
@@ -109,8 +99,8 @@ TextureImporter:
         y: 1692
         width: 310
         height: 229
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Grass2
       rect:
@@ -119,8 +109,8 @@ TextureImporter:
         y: 1672
         width: 384
         height: 134
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Star
       rect:
@@ -139,8 +129,8 @@ TextureImporter:
         y: 1133
         width: 1327
         height: 403
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 1
+      pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Dirt
       rect:
@@ -149,8 +139,8 @@ TextureImporter:
         y: 1444
         width: 384
         height: 92
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: LowerCave
       rect:
@@ -159,8 +149,8 @@ TextureImporter:
         y: 512
         width: 1331
         height: 468
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Tree
       rect:
@@ -169,8 +159,8 @@ TextureImporter:
         y: 789
         width: 605
         height: 605
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Tube
       rect:
@@ -199,8 +189,8 @@ TextureImporter:
         y: 0
         width: 356
         height: 292
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RedSaw
       rect:
@@ -219,8 +209,8 @@ TextureImporter:
         y: 0
         width: 384
         height: 384
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: BlueSaw
       rect:
@@ -249,8 +239,8 @@ TextureImporter:
         y: 7
         width: 23
         height: 121
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: UpperCasePiece2
       rect:
@@ -259,8 +249,8 @@ TextureImporter:
         y: 14
         width: 37
         height: 92
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: JumpPad
       rect:
@@ -269,8 +259,8 @@ TextureImporter:
         y: 1562
         width: 384
         height: 97
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: DirtMid
       rect:
@@ -279,8 +269,8 @@ TextureImporter:
         y: 1
         width: 384
         height: 190
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

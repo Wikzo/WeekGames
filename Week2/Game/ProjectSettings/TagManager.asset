@@ -37,6 +37,26 @@ TagManager:
   User Layer 30: 
   User Layer 31: 
   m_SortingLayers:
+  - name: Background
+    userID: 1
+    uniqueID: 1937179585
+    locked: 1
+  - name: Mountains
+    userID: 2
+    uniqueID: 2676316807
+    locked: 1
+  - name: Treeline
+    userID: 3
+    uniqueID: 4125341463
+    locked: 0
+  - name: Foreground
+    userID: 4
+    uniqueID: 316556759
+    locked: 0
+  - name: Player
+    userID: 5
+    uniqueID: 815210847
+    locked: 0
   - name: Default
     userID: 0
     uniqueID: 0

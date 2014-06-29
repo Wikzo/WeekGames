@@ -55,10 +55,10 @@ TextureImporter:
     - name: RightEye
       rect:
         serializedVersion: 2
-        x: 707
-        y: 842
-        width: 92
-        height: 142
+        x: 706
+        y: 837
+        width: 94
+        height: 147
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -75,10 +75,10 @@ TextureImporter:
     - name: LeftEye
       rect:
         serializedVersion: 2
-        x: 712
+        x: 711
         y: 656
-        width: 73
-        height: 112
+        width: 77
+        height: 114
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
