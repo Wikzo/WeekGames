@@ -104,4 +104,6 @@ public class CopyPastePosition : EditorWindow
         Rotation = Vector3.zero;
         Scale = Vector3.zero;
     }
+
+    
 }
