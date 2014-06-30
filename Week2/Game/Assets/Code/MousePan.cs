@@ -14,14 +14,47 @@ public class MousePan : MonoBehaviour
     public float ShiftFastPanSpeed = 0.2f;
     public float CtrlSlowPanSpeed = 0.03f;
     
-
+    // buttons
     public MouseButton ButtonToUse = MouseButton.Middle;
+    public KeyCode ResetCameraButton = KeyCode.L;
 
-    // Update is called once per frame
+    // line renderer
+    public bool UseLineRenderer = true;
+    LineRenderer line;
+
+    // defaults
+    Vector3 DefaultPosition;
+    float defaultOrtographicSize, defaultFieldOfView;
+
+    void Start()
+    {
+        DefaultPosition = Camera.main.transform.position;
+        
+        if (Camera.main.isOrthoGraphic)
+            defaultOrtographicSize = Camera.main.orthographicSize;
+        else
+            defaultFieldOfView = Camera.main.fieldOfView;
+
+        if (UseLineRenderer)
+            SetupLineRendererDefaults();
+    }
+
     void Update()
     {
         if (Input.GetMouseButton((int)ButtonToUse))
             PanMouse();
+        else
+            line.enabled = false;
+
+        if (Input.GetKeyDown(ResetCameraButton))
+        {
+            Camera.main.transform.position = DefaultPosition;
+
+            if (Camera.main.isOrthoGraphic)
+                Camera.main.orthographicSize = defaultOrtographicSize;
+            else
+                Camera.main.fieldOfView = defaultFieldOfView;
+        }
 
         // scroll
         if (Input.GetAxis("Mouse ScrollWheel") < 0) // back
@@ -82,7 +115,30 @@ public class MousePan : MonoBehaviour
             yMove = Mathf.Lerp(yMove, yPoint, 0.08f);
         }
 
+        // draw line renderer
+        if (UseLineRenderer)
+        {
+            line.enabled = true;
+            Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+            Vector3 screenSpaceCenter = Camera.main.ScreenToWorldPoint(center);
+            line.SetPosition(0, screenSpaceCenter);
+
+            Vector2 posObjectSpace = Camera.main.ScreenToWorldPoint(pos);
+            line.SetPosition(1, posObjectSpace);
+        }
+
+
         Vector3 camPos = Camera.main.transform.position;
         Camera.main.transform.position = new Vector3(camPos.x + xMove * Time.deltaTime, camPos.y + yMove * Time.deltaTime, camPos.z);
+    }
+
+    void SetupLineRendererDefaults()
+    {
+        line = GetComponent<LineRenderer>() != null ? GetComponent<LineRenderer>() : gameObject.AddComponent<LineRenderer>();
+        
+        line.material = new Material(Shader.Find("Particles/Additive"));
+        line.SetWidth(0.5f, 1);
+        line.SetColors(new Color(1, 1, 1, 0.5f), new Color(1, 1, 1, 0.5f));
+        line.enabled = false;
     }
 }

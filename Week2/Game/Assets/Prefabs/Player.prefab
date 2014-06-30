@@ -349,6 +349,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5c4f8cf635588489402cafbf147d57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxSpeed: 8
+  SpeedAccelerationOnGround: 10
+  SpeedAccelerationInAir: 5
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
