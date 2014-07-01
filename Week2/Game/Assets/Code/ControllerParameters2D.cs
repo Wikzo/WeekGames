@@ -5,6 +5,10 @@ using System;
 [Serializable] // make variables show up in Unity Inspector
 public class ControllerParameters2D
 {
+    /// <summary>
+    /// Default parameters to use with CharacterController2D
+    /// </summary>
+
     public enum JumpBehaviour
     {
         CanJumpOnGround,
@@ -18,8 +22,7 @@ public class ControllerParameters2D
     public float SlopeLimit = 30f;
 
     public float Gravity = -25f;
-
     public JumpBehaviour JumpRestrictions;
-
-    public float JumpFrequency = 0.25f; // how often can repeatedly press the jump button
+    public float JumpFrequency = 0.25f; // how often can repeatedly press the jump button (1/4 second)
+    public float JumpMagnitude = 12f;
 }

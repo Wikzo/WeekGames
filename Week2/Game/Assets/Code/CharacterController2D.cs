@@ -3,7 +3,11 @@ using System.Collections;
 
 public class CharacterController2D : MonoBehaviour
 {
-    private const float skinWidth = 0.02f;
+    /// <summary>
+    /// Handles input and movement for the 2D player
+    /// </summary>
+
+    private const float skinWidth = 0.001f; // change this if character gets stuck in geometry (default = 0.02)
     private const int totalHorizontalRays = 8;
     private const int totalVerticalRays = 4;
 
@@ -13,18 +17,33 @@ public class CharacterController2D : MonoBehaviour
     public ControllerParameters2D DefaultParameters;
     public ControllerState2D State { get; private set; }
 
-    public bool CanJump { get { return false; } }
+    // properties
     public Vector2 Velocity { get { return velocity; } } // value type
     public bool HandleCollisions { get; set; }
     public ControllerParameters2D Parameters { get { return overrideParameters ?? DefaultParameters; } } // returns overrideParameters, but if null returns DefaultParameters - Null coalescing (http://www.dotnetperls.com/null-coalescing)
-        
-    // common components
+    public GameObject standingOn { get; private set; }
+    public bool CanJump
+    { 
+        get 
+        {
+            if (Parameters.JumpRestrictions == ControllerParameters2D.JumpBehaviour.CanJumpAnywhere) // can jump anywhere
+                return jumpIn <= 0;
+            
+            if (Parameters.JumpRestrictions == ControllerParameters2D.JumpBehaviour.CanJumpOnGround) // can jump from ground
+                return State.IsGrounded;
+            else
+                return false; // cannot jump
+        } 
+    }
+
+    // fields
     private Vector2 velocity;
     private Transform _transform;
     private Vector3 localScale;
     private BoxCollider2D boxCollider;
     private ControllerParameters2D overrideParameters;
     private Vector3 raycastTopLeft, raycastBottomRight, raycastBottomLeft;
+    private float jumpIn;
 
 
     private float verticalDistanceBetweenRays, horizontalDistanceBetweenRays;
@@ -73,14 +92,23 @@ public class CharacterController2D : MonoBehaviour
 
     public void Jump()
     {
-
+        // TODO: moving platform support
+        AddForce(new Vector2(0, Parameters.JumpMagnitude));
+        jumpIn = Parameters.JumpFrequency;
     }
 
     public void LateUpdate()
     {
+        jumpIn -= Time.deltaTime;
+
+        velocity.y += Parameters.Gravity * Time.deltaTime; // gravity
         Move(velocity * Time.deltaTime);
     }
-
+    
+    /// <summary>
+    /// Moves the player
+    /// </summary>
+    /// <param name="deltaMovement"></param>
     private void Move(Vector2 deltaMovement)
     {
         var wasGrouned = State.IsCollidingBelow;
@@ -153,6 +181,7 @@ public class CharacterController2D : MonoBehaviour
             deltaMovement.x = raycastHit.point.x - rayVector.x;
             rayDistance = Mathf.Abs(deltaMovement.x);
 
+            // colliding right/left?
             if (isGoingRight)
             {
                 deltaMovement.x -= skinWidth;
@@ -164,6 +193,7 @@ public class CharacterController2D : MonoBehaviour
                 State.IsCollidingLeft = true;
             }
 
+            // stuck inside geometry?
             if (rayDistance < skinWidth + 0.0001f) // overshoot?
                 break;
         }
@@ -171,7 +201,59 @@ public class CharacterController2D : MonoBehaviour
 
     private void MoveVertically(ref Vector2 deltaMovement)
     {
+        var isGoingUp = deltaMovement.y > 0;
+        var rayDistance = Mathf.Abs(deltaMovement.y + skinWidth);
+        var rayDirection = isGoingUp ? Vector2.up : -Vector2.up;
+        var rayOrigin = isGoingUp ? raycastTopLeft : raycastBottomLeft;
 
+        rayOrigin.x += deltaMovement.x; // already calculated from MoveHorizontally
+
+        var standingOnDistance = float.MaxValue;
+
+        for (var i = 0; i < totalVerticalRays; i++)
+        {
+            var rayVector = new Vector2(rayOrigin.x + (i * horizontalDistanceBetweenRays), rayOrigin.y);
+            Debug.DrawRay(rayVector, rayDirection * rayDistance, Color.red);
+
+            var raycastHit = Physics2D.Raycast(rayVector, rayDirection, rayDistance, PlatformMask);
+            if (!raycastHit)
+                continue;
+
+            if (!isGoingUp)
+            {
+                var verticalDistanceToHit = _transform.position.y - raycastHit.point.y;
+                if (verticalDistanceToHit < standingOnDistance)
+                {
+                    standingOnDistance = verticalDistanceToHit;
+                    standingOn = raycastHit.collider.gameObject;
+                }
+            }
+
+            deltaMovement.y = raycastHit.point.y - rayVector.y;
+            rayDistance = Mathf.Abs(deltaMovement.y);
+
+            // colliding above/below?
+            if (isGoingUp)
+            {
+                deltaMovement.y -= skinWidth;
+                State.IsCollidingAbove = true;
+            }
+            else
+            {
+                deltaMovement.y += skinWidth;
+                State.IsCollidingBelow = true;
+                State.IsGrounded = true; // FIX: IsGrounded put in manually
+            }
+
+            // going down a slope?
+            if (!isGoingUp && deltaMovement.y > 0.0001f)
+                State.IsMovingDownSlope = true;
+
+            // stuck inside geometry?
+            if (rayDistance < skinWidth + 0.0001f)
+                break;
+        
+        }
     }
 
     private bool HandleHorizontalSlope(ref Vector2 deltaMovement, float angle, bool isGoingRight)
@@ -193,5 +275,6 @@ public class CharacterController2D : MonoBehaviour
     {
 
     }
+
 
 }

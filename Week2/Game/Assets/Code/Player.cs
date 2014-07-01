@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-    // "driver" (controller) for player controls
+    /// <summary>
+    /// Driver for the player controls - uses CharacterController2D for actual input handling
+    /// </summary>
 
     private bool isFacingRight;
     private CharacterController2D controller;

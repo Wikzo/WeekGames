@@ -3,6 +3,10 @@ using System.Collections;
 
 public class ControllerState2D
 {
+    /// <summary>
+    /// Possible states for CharacterController2D
+    /// </summary>
+    /// 
     // colliders
     public bool IsCollidingRight { get; set; }
     public bool IsCollidingLeft { get; set; }
@@ -20,7 +24,8 @@ public class ControllerState2D
     public void Reset()
     {
         // sets all booleans to false
-        IsMovingDownSlope = IsMovingDownSlope = IsCollidingRight = IsCollidingLeft = IsCollidingAbove = IsCollidingBelow = false;
+        // FIX: IsGrounded put in manually
+        IsMovingDownSlope = IsMovingDownSlope = IsCollidingRight = IsCollidingLeft = IsCollidingAbove = IsCollidingBelow = IsGrounded = false;
 
         SlopeAngle = 0f;
     }
