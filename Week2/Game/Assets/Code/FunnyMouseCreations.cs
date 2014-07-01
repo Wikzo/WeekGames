@@ -19,6 +19,8 @@ public class FunnyMouseCreations : MonoBehaviour
     private int layer;
     private bool holdingShift;
 
+    public Shader SelfIlum;
+    public Shader ParticlesAdditive;
     public int MaxNumberOfCubes = 50;
 
     void Start()
@@ -44,12 +46,24 @@ public class FunnyMouseCreations : MonoBehaviour
 
                 var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 
+                // add stuff to cube
+                // -----------------------------------
                 g = (GameObject)Instantiate(cube, pos, Quaternion.identity);
-                g.renderer.material = new Material(Shader.Find("Self-Illumin/Diffuse"));
+                //g.transform.position += new Vector3(0, 0, g.transform.localScale.z / 2);
+                g.renderer.material = new Material(SelfIlum);
                 g.renderer.material.color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
                 g.layer = layer;
                 DestroyImmediate(g.GetComponent<BoxCollider>());
                 g.AddComponent<BoxCollider2D>();
+                g.AddComponent<Rigidbody2D>();
+                
+                // trail
+                var trail = g.AddComponent<TrailRenderer>();
+                trail.material = new Material(ParticlesAdditive);
+                trail.startWidth = 0.2f;
+                trail.endWidth = 0.8f;
+                trail.time = 2f;
+                // -----------------------------------
 
                 Destroy(cube);
                 hasCreated = true;

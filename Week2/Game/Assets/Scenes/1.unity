@@ -318,7 +318,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 135573125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.9542141, y: 12.4278851, z: -10}
+  m_LocalPosition: {x: 16.3600006, y: 12.4278851, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -632,7 +632,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 310798350}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Size: {x: 3.8499999, y: 3.88000011}
   m_Center: {x: 1.91999996, y: 1.94000006}
 --- !u!1001 &442919490
@@ -693,6 +693,7 @@ GameObject:
   - 4: {fileID: 446078182}
   - 114: {fileID: 446078183}
   - 114: {fileID: 446078181}
+  - 114: {fileID: 446078184}
   m_Layer: 8
   m_Name: HelperMouse
   m_TagString: Untagged
@@ -740,7 +741,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf9a30dfd31caf4c9ac69442eb91a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelfIlum: {fileID: 10, guid: 0000000000000000f000000000000000, type: 0}
+  ParticlesAdditive: {fileID: 202, guid: 0000000000000000f000000000000000, type: 0}
   MaxNumberOfCubes: 500
+--- !u!114 &446078184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 446078180}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3e9c925666f234ba515d805d67e6df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  folder: ScreenshotMovieOutput
+  frameRate: 25
+  sizeMultiplier: 1
 --- !u!1 &453345337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1798,6 +1815,10 @@ Prefab:
     - target: {fileID: 400002, guid: 1c4daa1e9c6394a41b4406574bf0e020, type: 2}
       propertyPath: m_RootOrder
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6100000, guid: 1c4daa1e9c6394a41b4406574bf0e020, type: 2}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1c4daa1e9c6394a41b4406574bf0e020, type: 2}
