@@ -17,6 +17,7 @@ public class MousePan : MonoBehaviour
     // buttons
     public MouseButton ButtonToUse = MouseButton.Middle;
     public KeyCode ResetCameraButton = KeyCode.L;
+    public bool HoldShiftToZoomWithScrollWheel = true;
 
     // line renderer
     public bool UseLineRenderer = true;
@@ -57,6 +58,11 @@ public class MousePan : MonoBehaviour
         }
 
         // scroll
+        // ---------------------------------
+        if (HoldShiftToZoomWithScrollWheel)
+            if (!Input.GetKey(KeyCode.LeftShift))
+                return;
+
         if (Input.GetAxis("Mouse ScrollWheel") < 0) // back
         {
             if (Camera.main.isOrthoGraphic)
@@ -71,8 +77,9 @@ public class MousePan : MonoBehaviour
                 Camera.main.orthographicSize--;
             else
                 Camera.main.fieldOfView--;
-
         }
+        // ---------------------------------
+
     }
 
     void PanMouse()
