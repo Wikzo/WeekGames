@@ -259,8 +259,8 @@ TextureImporter:
         y: 1562
         width: 384
         height: 97
-      alignment: 6
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: DirtMid
       rect:

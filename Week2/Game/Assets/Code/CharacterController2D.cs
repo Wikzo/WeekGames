@@ -21,7 +21,7 @@ public class CharacterController2D : MonoBehaviour
     public Vector2 Velocity { get { return velocity; } } // value type
     public bool HandleCollisions { get; set; }
     public ControllerParameters2D Parameters { get { return overrideParameters ?? DefaultParameters; } } // returns overrideParameters, but if null returns DefaultParameters - Null coalescing (http://www.dotnetperls.com/null-coalescing)
-    public GameObject standingOn { get; private set; }
+    public GameObject StandingOn { get; private set; }
     public bool CanJump
     { 
         get 
@@ -45,11 +45,10 @@ public class CharacterController2D : MonoBehaviour
     private ControllerParameters2D overrideParameters;
     private Vector3 raycastTopLeft, raycastBottomRight, raycastBottomLeft;
     private float jumpIn;
+    private GameObject lastStandingOn;
 
     private Vector3 activeGlobalPlatformPoint;
     private Vector3 activeLocalPlatformPoint;
-
-
 
     private float verticalDistanceBetweenRays, horizontalDistanceBetweenRays;
 
@@ -131,6 +130,8 @@ public class CharacterController2D : MonoBehaviour
                 MoveHorizontally(ref deltaMovement);
 
             MoveVertically(ref deltaMovement); // being affected by gravity
+            CorrectHorizontalPlacement(ref deltaMovement, true); // when hitting moving platforms
+            CorrectHorizontalPlacement(ref deltaMovement, false); // when hitting moving platforms
         }
 
         transform.Translate(deltaMovement, Space.World); // apply the movement
@@ -145,30 +146,53 @@ public class CharacterController2D : MonoBehaviour
         if (State.IsMovingDownSlope)
             velocity.y = 0f;
 
-        // get ready for moving platforms
-        if (standingOn != null)
+        if (StandingOn != null)
         {
-            activeGlobalPlatformPoint = transform.position; // player's position (world)
-            activeLocalPlatformPoint = standingOn.transform.InverseTransformPoint(transform.position); // player's position in relation to the platform (world-->local)
-            print("move" + Time.time);
+            // get ready for moving platforms
+            // --------------------------------------
+            activeGlobalPlatformPoint = _transform.position; // player's position (world)
+            activeLocalPlatformPoint = StandingOn.transform.InverseTransformPoint(_transform.position); // player's position in relation to the platform (world-->local)
 
             //Debug.DrawLine(transform.position, activeGlobalPlatformPoint, Color.red);
             //Debug.DrawLine(transform.position, activeLocalPlatformPoint, Color.green);
+            // --------------------------------------
+
+            // get ready for bouncy platforms
+            // --------------------------------------
+            if (lastStandingOn != StandingOn)
+            {
+                if (lastStandingOn != null)
+                    lastStandingOn.SendMessage("ControllerExit2D", this, SendMessageOptions.DontRequireReceiver);
+
+                StandingOn.SendMessage("ControllerEnter2D", this, SendMessageOptions.DontRequireReceiver);
+                lastStandingOn = StandingOn;
+            }
+            else if (StandingOn != null)
+                StandingOn.SendMessage("ControllerStay2D", this, SendMessageOptions.DontRequireReceiver);
+            // --------------------------------------
+        }
+        else if (lastStandingOn != null)
+        {
+            lastStandingOn.SendMessage("ControllerExit2D", this, SendMessageOptions.DontRequireReceiver);
+            lastStandingOn = null;
         }
     }
 
     private void HandleMovingPlatforms() // moving platforms
     {
-        if (standingOn != null)
+        if (StandingOn != null)
         {
-            var newGlobalPlatformPoint = standingOn.transform.TransformPoint(activeLocalPlatformPoint); // player's position in relation to world (local-->world)
+            var newGlobalPlatformPoint = StandingOn.transform.TransformPoint(activeLocalPlatformPoint); // player's position in relation to world (local-->world)
             var moveDistance = newGlobalPlatformPoint - activeGlobalPlatformPoint;
-            print("HandleMovingPlatforms" + Time.time);
 
-            //print("active:" + activeGlobalPlatformPoint + "; new: " + newGlobalPlatformPoint);
             // activeGlobalPlatformPoint and newGlobalPlatformPoint are the same on non-moving platforms (world coordinates)
             // on moving platforms, there will be a difference between the two, since platform is moving in next frame
             // activeGlobalPlatformPoint will be older than newGlobalPlatformPoint --> gives a difference
+            
+            // decoupling the two points - Order of method calls:
+            // Move() is called first, then HandleMovingPlatforms().
+            // However, HandleMovingPlatforms() only proceeds when standingOn != null
+            // standingOn is set in MoveVertically(), which is called by Move()
 
             if (moveDistance != Vector3.zero)
                 transform.Translate(moveDistance, Space.World);
@@ -178,7 +202,40 @@ public class CharacterController2D : MonoBehaviour
         else
             PlatformVelocity = Vector3.zero;
 
-        standingOn = null;
+        StandingOn = null;
+    }
+
+    private void CorrectHorizontalPlacement(ref Vector2 deltaMovement, bool isRight) // for when platforms move into player
+    {
+        var halfWidth = (boxCollider.size.x * localScale.x) / 2f;
+        var rayOrigin = isRight ? raycastBottomRight : raycastBottomLeft;
+
+        if (isRight)
+            rayOrigin.x -= (halfWidth - skinWidth);
+        else
+            rayOrigin.x += (halfWidth + skinWidth);
+ 
+        var rayDirection = isRight ? Vector2.right : -Vector2.right;
+        var offset = 0f;
+
+        for (var i = 1; i < totalHorizontalRays - 1; i++)
+        {
+            // deltaMovement is used, so rays won't be de-synced by 1 frame
+            var rayVector = new Vector2(deltaMovement.x + rayOrigin.x, deltaMovement.y + rayOrigin.y + (i * verticalDistanceBetweenRays));
+            
+            //Debug.DrawRay(rayVector, rayDirection * halfWidth, isRight ? Color.cyan : Color.magenta);
+
+            var raycastHit = Physics2D.Raycast(rayVector, rayDirection, halfWidth, PlatformMask);
+            if (!raycastHit)
+                continue;
+
+            // calculate displacement to move the player away from platform (inverse direction)
+            // offset = (hitPoint-centerPoint) - halfWidthPoint
+            offset = isRight ? ((raycastHit.point.x - _transform.position.x) - halfWidth) : (halfWidth - (_transform.position.x - raycastHit.point.x));
+        }
+
+        deltaMovement.x += offset; // push player away from moving platform
+
     }
 
     private void CalculateRaysOrigins()
@@ -259,7 +316,7 @@ public class CharacterController2D : MonoBehaviour
                 if (verticalDistanceToHit < standingOnDistance)
                 {
                     standingOnDistance = verticalDistanceToHit;
-                    standingOn = raycastHit.collider.gameObject;
+                    StandingOn = raycastHit.collider.gameObject;
                 }
             }
 
@@ -346,13 +403,21 @@ public class CharacterController2D : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
+        var parameters = collider.gameObject.GetComponent<ControllerPhysicsVolume2D>();
+        if (parameters == null)
+            return;
 
+        overrideParameters = parameters.Parameters;
     }
 
     public void OnTriggerExit2D(Collider2D collider)
     {
+        var parameters = collider.gameObject.GetComponent<ControllerPhysicsVolume2D>();
+        if (parameters == null)
+            return;
+
+        overrideParameters = null;
 
     }
-
 
 }
