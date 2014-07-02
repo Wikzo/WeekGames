@@ -16,7 +16,7 @@ public class ControllerState2D
 
     // slope
     public bool IsMovingDownSlope { get; set; }
-    public bool IsUpDownSlope { get; set; }
+    public bool IsMovingUpSlope { get; set; }
     public float SlopeAngle { get; set; }
 
     public bool HasCollisions { get { return IsCollidingRight || IsCollidingLeft || IsCollidingAbove || IsCollidingBelow; } }
@@ -38,7 +38,7 @@ public class ControllerState2D
             IsCollidingAbove,
             IsCollidingBelow,
             IsMovingDownSlope,
-            IsUpDownSlope,
+            IsMovingUpSlope,
             SlopeAngle);
     }
 

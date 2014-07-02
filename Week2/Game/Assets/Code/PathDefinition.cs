@@ -74,6 +74,10 @@ public class PathDefinition : MonoBehaviour
         /*if (Points.Length < 2 || Points == null)
             return;
         */
+
+        // var points = Points.Where(t => t != null).ToList(); // using System.Linq
+        // more in video #12 about deleting notes...
+
         for (var i = 1; i < targetPoints.Count; i++)
         {
             Gizmos.DrawLine(targetPoints[i - 1].position, targetPoints[i].position);
