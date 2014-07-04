@@ -48,10 +48,18 @@ TagManager:
   - name: Treeline
     userID: 3
     uniqueID: 4125341463
+    locked: 1
+  - name: Water
+    userID: 6
+    uniqueID: 1565236061
     locked: 0
   - name: Foreground
     userID: 4
     uniqueID: 316556759
+    locked: 0
+  - name: Particles
+    userID: 7
+    uniqueID: 2782302427
     locked: 0
   - name: Player
     userID: 5

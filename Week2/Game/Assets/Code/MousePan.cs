@@ -27,6 +27,8 @@ public class MousePan : MonoBehaviour
     Vector3 DefaultPosition;
     float defaultOrtographicSize, defaultFieldOfView;
 
+    public MonoBehaviour CameraScriptToDisable;
+
     void Start()
     {
         DefaultPosition = Camera.main.transform.position;
@@ -40,12 +42,23 @@ public class MousePan : MonoBehaviour
             SetupLineRendererDefaults();
     }
 
+#if UNITY_EDITOR
     void Update()
     {
         if (Input.GetMouseButton((int)ButtonToUse))
+        {
+            if (CameraScriptToDisable != null)
+                CameraScriptToDisable.enabled = false;
+
             PanMouse();
+        }
         else
+        {
             line.enabled = false;
+
+            if (CameraScriptToDisable != null)
+                CameraScriptToDisable.enabled = true;
+        }
 
         if (Input.GetKeyDown(ResetCameraButton))
         {
@@ -81,9 +94,12 @@ public class MousePan : MonoBehaviour
         // ---------------------------------
 
     }
+#endif
 
     void PanMouse()
     {
+        
+
         // drag-pan camera
         Vector2 pos = Input.mousePosition;
 
