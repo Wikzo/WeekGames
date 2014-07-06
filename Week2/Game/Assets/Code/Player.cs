@@ -11,12 +11,15 @@ public class Player : MonoBehaviour
     private bool isFacingRight;
     private CharacterController2D controller;
     private float normalizedHorizontalSpeed; // -1 = left, 1 = right
+    private float rotationWhenDeadZ = 57f;
 
     public float MaxSpeed = 8f;
     public float SpeedAccelerationOnGround = 10f;
     public float SpeedAccelerationInAir = 5f;
 
-    public void Start()
+    public bool IsDead { get; private set; }
+
+    public void Awake() // important to set "controller" before Start() in Checkpoint.cs
     {
         controller = GetComponent<CharacterController2D>();
         isFacingRight = transform.localScale.x > 0; // not flipped (scale > 0) = facing right
@@ -25,20 +28,41 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
-        HandleInput();
+        if (!IsDead)
+            HandleInput();
 
+
+        // calculate and apply horizontal movement
         var movementFactor = controller.State.IsGrounded ? SpeedAccelerationOnGround : SpeedAccelerationInAir;
-        controller.SetHorizontalForce(Mathf.Lerp(controller.Velocity.x, normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * movementFactor));
+        var horizontalForce = IsDead ? 0 : Mathf.Lerp(controller.Velocity.x, normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * movementFactor);
+        controller.SetHorizontalForce(horizontalForce);
+        
     }
 
     public void Kill()
     {
+        controller.HandleCollisions = false;
+        collider2D.enabled = false;
+        IsDead = true;
 
+        var rotation = isFacingRight ? rotationWhenDeadZ : -rotationWhenDeadZ;
+        transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x, transform.rotation.y, rotation)); // tilt the player slightly
+
+        controller.SetForce(new Vector2(0, 12));
     }
 
     public void RespawnAt(Transform spawnpoint)
     {
+        transform.rotation = Quaternion.Euler(new Vector3(0,0,0)); // reset rotation
 
+        if (!isFacingRight)
+            Flip();
+
+        controller.HandleCollisions = true;
+        collider2D.enabled = true;
+        IsDead = false;
+
+        transform.position = spawnpoint.position;
     }
 
 
@@ -70,4 +94,5 @@ public class Player : MonoBehaviour
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.y);
         isFacingRight = transform.localScale.x > 0;
     }
+
 }

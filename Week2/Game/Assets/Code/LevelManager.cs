@@ -14,6 +14,7 @@ class LevelManager : MonoBehaviour
     private int currentCheckpointIndex;
 
     public Checkpoint DebugSpawn;
+    public float RespawnTime = 1.5f;
 
     public void Awake()
     {
@@ -36,7 +37,7 @@ class LevelManager : MonoBehaviour
         else if (currentCheckpointIndex != -1)
             checkpoints[currentCheckpointIndex].SpawnPlayer(Player);
         // (else: just let player spawn where he is placed in the scene manually)
-#else
+#else // build
         if (currentCheckpointIndex != -1)
             checkpoints[currentCheckpointIndex].SpawnPlayer(Player);
 #endif
@@ -45,16 +46,43 @@ class LevelManager : MonoBehaviour
 
     public void Update()
     {
+        // last checkpoint?
+        var isAtLastCheckpoint = currentCheckpointIndex + 1 >= checkpoints.Count;
+        if (isAtLastCheckpoint)
+            return;
 
+        // haven't hit checkpoint yet
+        var distanceToNextCheckpoint = checkpoints[currentCheckpointIndex + 1].transform.position.x - Player.transform.position.x;
+        if (distanceToNextCheckpoint >= 0)
+            return;
+
+        // we hit a new checkpoint!
+
+        checkpoints[currentCheckpointIndex].PlayerLeftCheckpoint();
+        
+        currentCheckpointIndex++;
+        checkpoints[currentCheckpointIndex].PlayerHitCheckpoint();
+        // TODO: add time bonus
     }
 
     public void KillPlayer()
     {
-
+        StartCoroutine(KillPlayerCo());
     }
 
     private IEnumerator KillPlayerCo()
     {
-        yield break;
+        Player.Kill();
+        Camera.IsFollowing = false;
+
+        yield return new WaitForSeconds(RespawnTime);
+
+        Camera.IsFollowing = true;
+
+        if (currentCheckpointIndex != -1)
+            checkpoints[currentCheckpointIndex].SpawnPlayer(Player);
+
+        // TODO: add points system
+
     }
 }
