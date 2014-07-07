@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 class LevelManager : MonoBehaviour
 {
@@ -9,12 +10,25 @@ class LevelManager : MonoBehaviour
 
     public Player Player { get; private set; }
     public CameraController Camera { get; private set; }
+    public TimeSpan RunningTime { get { return DateTime.Now - started; } }
+    public int CurrentTimeBonus
+    {
+        get
+        {
+            var secondDifference = (int)(BonusCutoffSeconds - RunningTime.TotalSeconds);
+            return Math.Max(0, secondDifference) * BonusSecondsMultiplier;
+        }
+    }
 
     private List<Checkpoint> checkpoints;
     private int currentCheckpointIndex;
+    private DateTime started;
+    private int savedPoints; // used to cache number of points, in case the player dies unexpectedly
 
     public Checkpoint DebugSpawn;
     public float RespawnTime = 1.5f;
+    public int BonusCutoffSeconds; // threshold - max time player has to go from checkpoint A to checkpoint B to receive bonus
+    public int BonusSecondsMultiplier; // amount of seconds left * multiplier
 
     public void Awake()
     {
@@ -29,6 +43,24 @@ class LevelManager : MonoBehaviour
 
         Player = FindObjectOfType<Player>();
         Camera = FindObjectOfType<CameraController>();
+
+        started = DateTime.Now;
+
+        // loop backwards to find what stars belong to what checkpoints
+        var listeners = FindObjectsOfType<MonoBehaviour>().OfType<IPlayerRespawnListener>(); // using Linq
+        foreach (var listener in listeners)
+        {
+            for (var i = checkpoints.Count - 1; i >= 0; i--)
+            {
+                var distance = ((MonoBehaviour)listener).transform.position.x - checkpoints[i].transform.position.x;
+
+                if (distance < 0) // looking at a star behind (left to) a checkpoint (not what we want)
+                    continue;
+
+                checkpoints[i].AssignObjectToCheckpoint(listener);
+                break;
+            }
+        }
 
 #if UNITY_EDITOR
         // spawn the player
@@ -59,10 +91,12 @@ class LevelManager : MonoBehaviour
         // we hit a new checkpoint!
 
         checkpoints[currentCheckpointIndex].PlayerLeftCheckpoint();
-        
         currentCheckpointIndex++;
         checkpoints[currentCheckpointIndex].PlayerHitCheckpoint();
-        // TODO: add time bonus
+        GameManager.Instance.AddPoints(CurrentTimeBonus);
+        savedPoints = GameManager.Instance.Points;
+        started = DateTime.Now;
+        
     }
 
     public void KillPlayer()
@@ -83,6 +117,7 @@ class LevelManager : MonoBehaviour
             checkpoints[currentCheckpointIndex].SpawnPlayer(Player);
 
         // TODO: add points system
-
+        started = DateTime.Now;
+        GameManager.Instance.ResetPointsTo(savedPoints);
     }
 }

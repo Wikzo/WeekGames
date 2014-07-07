@@ -16,15 +16,19 @@ public class Player : MonoBehaviour
     public float MaxSpeed = 8f;
     public float SpeedAccelerationOnGround = 10f;
     public float SpeedAccelerationInAir = 5f;
+    public int MaxHealth = 100;
+    public GameObject TakeDamageEffect;
 
     public bool IsDead { get; private set; }
+    public int Health { get; set; }
 
     public void Awake() // important to set "controller" before Start() in Checkpoint.cs
     {
         controller = GetComponent<CharacterController2D>();
         isFacingRight = transform.localScale.x > 0; // not flipped (scale > 0) = facing right
-    }
 
+        Health = MaxHealth;
+    }
 
     public void Update()
     {
@@ -44,11 +48,13 @@ public class Player : MonoBehaviour
         controller.HandleCollisions = false;
         collider2D.enabled = false;
         IsDead = true;
+        Health = 0;
 
+        // tilt the player slightly
         var rotation = isFacingRight ? rotationWhenDeadZ : -rotationWhenDeadZ;
-        transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x, transform.rotation.y, rotation)); // tilt the player slightly
+        transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x, transform.rotation.y, rotation)); 
 
-        controller.SetForce(new Vector2(0, 12));
+        controller.SetForce(new Vector2(0, 12)); // prevent horizontal force
     }
 
     public void RespawnAt(Transform spawnpoint)
@@ -61,10 +67,19 @@ public class Player : MonoBehaviour
         controller.HandleCollisions = true;
         collider2D.enabled = true;
         IsDead = false;
+        Health = MaxHealth;
 
         transform.position = spawnpoint.position;
     }
 
+    public void TakeDamage(int damage)
+    {
+        Instantiate(TakeDamageEffect, transform.position, transform.rotation);
+        Health -= damage;
+
+        if (Health <= 0)
+            LevelManager.Instance.KillPlayer();
+    }
 
     private void HandleInput()
     {
