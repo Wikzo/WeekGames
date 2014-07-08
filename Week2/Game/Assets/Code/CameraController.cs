@@ -15,13 +15,16 @@ public class CameraController : MonoBehaviour
 
     public bool IsFollowing { get; set; }
 
-    private Vector3 min, max;
+    public Vector3 Min { get; private set; }
+    public Vector3 Max { get; private set; }
+
+    //private Vector3 min, max;
     private Camera cam;
 
-    void Start()
+    void Awake()
     {
-        min = Bounds.bounds.min;
-        max = Bounds.bounds.max;
+        Min = Bounds.bounds.min;
+        Max = Bounds.bounds.max;
         IsFollowing = true;
         cam = GetComponent<Camera>();
     }
@@ -42,8 +45,8 @@ public class CameraController : MonoBehaviour
 
         var cameraHalfWidth = cam.orthographicSize * cam.aspect;
 
-        x = Mathf.Clamp(x, min.x + cameraHalfWidth, max.x - cameraHalfWidth);
-        y = Mathf.Clamp(y, min.y + cam.orthographicSize, max.y - cam.orthographicSize);
+        x = Mathf.Clamp(x, Min.x + cameraHalfWidth, Max.x - cameraHalfWidth);
+        y = Mathf.Clamp(y, Min.y + cam.orthographicSize, Max.y - cam.orthographicSize);
 
         cam.transform.position = new Vector3(x, y, transform.position.z);
     }

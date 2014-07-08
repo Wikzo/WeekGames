@@ -15,6 +15,9 @@ public class PointStar : MonoBehaviour, IPlayerRespawnListener
         Instantiate(Effect, transform.position, transform.rotation);
 
         gameObject.SetActive(false); // will be set to active again if player dies/respawns
+
+        FloatingText.Show(string.Format("+{0}", PointsToAdd), "PointStarText",
+            new FromWorldPointTextPositioner(Camera.main, transform.position, 2.5f, 50f));
     }
 
     public void OnPlayerRespawnInThisCheckpoint(Checkpoint checkpoint, Player player)

@@ -34,6 +34,12 @@ public class FollowPath : MonoBehaviour
         transform.position = currentPoint.Current.position;
     }
 
+    void OnDrawGizmos()
+    {
+        transform.position = Path.transform.position;
+
+    }
+
     void Update()
     {
         if (currentPoint == null || currentPoint.Current == null)

@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     public float SpeedAccelerationOnGround = 10f;
     public float SpeedAccelerationInAir = 5f;
     public int MaxHealth = 100;
-    public GameObject TakeDamageEffect;
+    public GameObject DamageEffect;
 
     public bool IsDead { get; private set; }
     public int Health { get; set; }
@@ -74,7 +74,10 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Instantiate(TakeDamageEffect, transform.position, transform.rotation);
+        FloatingText.Show(string.Format("-{0}", damage), "PlayerTakeDamageText",
+            new FromWorldPointTextPositioner(Camera.main, transform.position, 2f, 60f));
+
+        Instantiate(DamageEffect, transform.position, transform.rotation);
         Health -= damage;
 
         if (Health <= 0)

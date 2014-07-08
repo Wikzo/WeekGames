@@ -12,7 +12,7 @@ public class GiveDamageToPlayer : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate()
 	{
-		velocity = (lastPosition - (Vector2)transform.position / Time.deltaTime); // how many units we are moving per second
+		velocity = (lastPosition - (Vector2)transform.position) / Time.deltaTime; // how many units we are moving per second
 		lastPosition = transform.position;
 	}
 
@@ -28,7 +28,7 @@ public class GiveDamageToPlayer : MonoBehaviour {
 
 		// calculate direction (left = -1; right = 1) and then multiply it by totalVelocity (clamped) for knockback effect
 		controller.SetForce(new Vector2(
-			-1 * Mathf.Sign(totalVelocity.x) * Mathf.Clamp(Mathf.Abs(totalVelocity.x) * 5, 10, 20),
-			-1 * Mathf.Sign(totalVelocity.y) * Mathf.Clamp(Mathf.Abs(totalVelocity.y) * 2, 0, 15)));
+			-1 * Mathf.Sign(totalVelocity.x) * Mathf.Clamp(Mathf.Abs(totalVelocity.x) * 6, 10, 40),
+			-1 * Mathf.Sign(totalVelocity.y) * Mathf.Clamp(Mathf.Abs(totalVelocity.y) * 6, 5, 20)));
 	}
 }
