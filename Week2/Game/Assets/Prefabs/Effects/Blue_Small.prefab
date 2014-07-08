@@ -10,10 +10,10 @@ GameObject:
   - 4: {fileID: 400000}
   - 198: {fileID: 19800000}
   - 199: {fileID: 19900000}
-  - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: YellowRed_Small
+  m_Name: Blue_Small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: -5.76971769, y: 3.26487422, z: 0}
+  m_LocalPosition: {x: -1.38555741, y: 11.9883766, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -39,9 +39,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef1b99a1133826e4bacc9dec1eef3b31, type: 3}
+  m_Script: {fileID: 11500000, guid: 3929595707ba23848a158bd66448bc54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayerName: OnTopOfPlayer
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -50,10 +51,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3929595707ba23848a158bd66448bc54, type: 3}
+  m_Script: {fileID: 11500000, guid: ef1b99a1133826e4bacc9dec1eef3b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LayerName: OnTopOfPlayer
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -231,7 +231,7 @@ ParticleSystem:
         rgba: 4294967295
       minMaxState: 0
     startSize:
-      scalar: 1
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -433,10 +433,10 @@ ParticleSystem:
       maxGradient:
         key0:
           serializedVersion: 2
-          rgba: 4278190335
+          rgba: 4294901843
         key1:
           serializedVersion: 2
-          rgba: 180
+          rgba: 15728698
         key2:
           serializedVersion: 2
           rgba: 0

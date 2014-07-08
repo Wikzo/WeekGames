@@ -156,7 +156,8 @@ GameObject:
   - 114: {fileID: 11400000}
   - 50: {fileID: 5000000}
   - 61: {fileID: 6100000}
-  m_Layer: 0
+  - 114: {fileID: 11400006}
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,6 +182,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100022
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400022}
+  m_Layer: 0
+  m_Name: ProjectileSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -190,7 +206,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -.203243405, y: -.374927491, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 400022}
   m_Father: {fileID: 400016}
   m_RootOrder: 7
 --- !u!4 &400002
@@ -323,6 +340,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 400018}
   m_RootOrder: 1
+--- !u!4 &400022
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2.69959712, y: 2.69959712, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400000}
+  m_RootOrder: 0
 --- !u!50 &5000000
 Rigidbody2D:
   m_ObjectHideFlags: 1
@@ -386,6 +415,14 @@ MonoBehaviour:
   SpeedAccelerationInAir: 5
   MaxHealth: 100
   DamageEffect: {fileID: 100000, guid: 8ff2613fa952e5f42a04d96d147cb5d7, type: 2}
+  PlayerShootSound: {fileID: 8300000, guid: 8fe1c4cb84e479240b06869c4db160b7, type: 3}
+  PlayerHitSound: {fileID: 8300000, guid: bdbf21ad96d82aa4d9938ed302f0463a, type: 3}
+  PlayerGetHealthSound: {fileID: 8300000, guid: ec36961a06fb2e74aa0994993ef56a8f,
+    type: 3}
+  ProjectileToShoot: {fileID: 11400000, guid: cfdaa9c9a1bbedd44a3b7b99fc4ed50a, type: 2}
+  FireProjectileEffect: {fileID: 100000, guid: 29631e6dea75a6c4c9085773344aac9a, type: 2}
+  FireRate: .5
+  ProjectileFireLocation: {fileID: 400022}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -398,6 +435,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LayerName: Particles
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0778f0989f921fc4394e99ba14d0bd27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bounds: {fileID: 0}
+  Above: 0
+  Below: 2
+  Left: 1
+  Right: 1
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

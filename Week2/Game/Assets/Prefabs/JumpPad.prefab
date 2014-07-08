@@ -82,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpMagnitude: 20
   UseBouncyAnimation: 1
+  JumpSound: {fileID: 8300000, guid: 981f31a18142d42409dee0f8f0699d62, type: 3}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

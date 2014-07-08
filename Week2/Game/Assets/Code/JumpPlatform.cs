@@ -5,6 +5,7 @@ public class JumpPlatform : MonoBehaviour
 {
     public float JumpMagnitude = 20f;
     public bool UseBouncyAnimation = true;
+    public AudioClip JumpSound;
 
     private Vector3 bouncyScaleFrom;
     private Vector3 bouncyScaleTo = new Vector3(1f, 0.8f, 1f);
@@ -18,6 +19,9 @@ public class JumpPlatform : MonoBehaviour
 
     public void ControllerEnter2D(CharacterController2D controller)
     {
+        if (JumpSound != null)
+            AudioSource.PlayClipAtPoint(JumpSound, transform.position);
+    
         if (UseBouncyAnimation)
             StartCoroutine(EnableMoverAnimation(controller));
         else

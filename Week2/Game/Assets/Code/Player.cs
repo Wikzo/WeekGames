@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ITakeDamage
 {
     /// <summary>
     /// Driver for the player controls - uses CharacterController2D for actual input handling
@@ -19,8 +19,20 @@ public class Player : MonoBehaviour
     public int MaxHealth = 100;
     public GameObject DamageEffect;
 
+    public AudioClip PlayerShootSound;
+    public AudioClip PlayerHitSound;
+    public AudioClip PlayerGetHealthSound;
+    private AudioSource audioSource;
+
+    public Projectile ProjectileToShoot;
+    public GameObject FireProjectileEffect;
+    public float FireRate;
+    public Transform ProjectileFireLocation;
+
     public bool IsDead { get; private set; }
     public int Health { get; set; }
+
+    private float canFireIn;
 
     public void Awake() // important to set "controller" before Start() in Checkpoint.cs
     {
@@ -28,13 +40,18 @@ public class Player : MonoBehaviour
         isFacingRight = transform.localScale.x > 0; // not flipped (scale > 0) = facing right
 
         Health = MaxHealth;
+
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void Update()
     {
+        if (canFireIn > -1) // only needs to be zero or greater
+            canFireIn -= Time.deltaTime;
+
         if (!IsDead)
             HandleInput();
-
 
         // calculate and apply horizontal movement
         var movementFactor = controller.State.IsGrounded ? SpeedAccelerationOnGround : SpeedAccelerationInAir;
@@ -72,8 +89,10 @@ public class Player : MonoBehaviour
         transform.position = spawnpoint.position;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, GameObject originator)
     {
+        audioSource.PlayOneShot(PlayerHitSound);
+
         FloatingText.Show(string.Format("-{0}", damage), "PlayerTakeDamageText",
             new FromWorldPointTextPositioner(Camera.main, transform.position, 2f, 60f));
 
@@ -103,8 +122,33 @@ public class Player : MonoBehaviour
         else
             normalizedHorizontalSpeed = 0;
 
-        if (controller.CanJump && Input.GetKeyDown(KeyCode.Space))
+        if (controller.CanJump && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)))
             controller.Jump();
+
+        if (Input.GetMouseButtonDown(0))
+            FireProjectile();
+    }
+
+    private void FireProjectile()
+    {
+        if (canFireIn > 0)
+            return;
+
+        if (FireProjectileEffect != null)
+        {
+            var effect = (GameObject)Instantiate(FireProjectileEffect, ProjectileFireLocation.position, ProjectileFireLocation.rotation);
+            effect.transform.parent = transform;
+        }
+
+        var direction = isFacingRight ? Vector2.right : -Vector2.right;
+
+        var projectile = (Projectile)Instantiate(ProjectileToShoot, ProjectileFireLocation.position, ProjectileFireLocation.rotation);
+        projectile.Initialize(gameObject, direction, controller.Velocity);
+
+        canFireIn = FireRate;
+
+        //AudioSource.PlayClipAtPoint(PlayerShootSound, transform.position); // doesn't require AudioSource component!
+        audioSource.PlayOneShot(PlayerShootSound);
     }
 
     private void Flip()
@@ -113,4 +157,20 @@ public class Player : MonoBehaviour
         isFacingRight = transform.localScale.x > 0;
     }
 
+    public void GiveHealth(int health, GameObject gameObject)
+    {
+        audioSource.PlayOneShot(PlayerGetHealthSound);
+
+        FloatingText.Show(string.Format("+{0} HP", health),
+            "PlayerGotHealthText", new FromWorldPointTextPositioner(Camera.main, transform.position, 2.5f, 50f));
+
+        Health = Mathf.Min(Health + health, MaxHealth);
+    }
+
+    public void FinishLevel()
+    {
+        enabled = false;
+        controller.enabled = false;
+        collider2D.enabled = false;
+    }
 }

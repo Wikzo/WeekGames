@@ -32,6 +32,7 @@ class LevelManager : MonoBehaviour
 
     public void Awake()
     {
+        savedPoints = GameManager.Instance.Points;
         Instance = this;
     }
 
@@ -119,5 +120,31 @@ class LevelManager : MonoBehaviour
         // TODO: add points system
         started = DateTime.Now;
         GameManager.Instance.ResetPointsTo(savedPoints);
+    }
+
+    public void GotoNextLevel(string levelName)
+    {
+        StartCoroutine(GoToNextLevelCo(levelName));
+    }
+
+    private IEnumerator GoToNextLevelCo(string levelName)
+    {
+        Player.FinishLevel(); // mobilizes player
+
+        GameManager.Instance.AddPoints(currentCheckpointIndex);
+
+        FloatingText.Show("Level Complete!", "CheckpointText", new CenteredTextPositioner(0.2f));
+
+        yield return new WaitForSeconds(1);
+
+        FloatingText.Show(string.Format("{0} points!", GameManager.Instance.Points),
+            "CheckpointTextBonus", new CenteredTextPositioner(0.1f));
+
+        yield return new WaitForSeconds(2.5f);
+
+        if (string.IsNullOrEmpty(levelName))
+            Application.LoadLevel("StartScreen");
+        else
+            Application.LoadLevel(levelName);
     }
 }

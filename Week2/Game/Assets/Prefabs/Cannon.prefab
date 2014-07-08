@@ -40,7 +40,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 212: {fileID: 21200000}
-  m_Layer: 0
+  - 61: {fileID: 6100000}
+  m_Layer: 8
   m_Name: Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.02635, y: 1.6450429, z: 0}
+  m_LocalPosition: {x: 13.8870716, y: 1.60065603, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400004}
@@ -66,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.02000046, y: 1.64504337, z: 0}
+  m_LocalPosition: {x: 3.02000046, y: 1.60065556, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400004}
@@ -85,6 +86,17 @@ Transform:
   - {fileID: 400000}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!61 &6100000
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Size: {x: 3.0999999, y: 2.41000009}
+  m_Center: {x: 1.54999995, y: 1.08000004}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,8 +110,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Destination: {fileID: 400000}
   Projectile: {fileID: 11400002, guid: 13bbb4852293fc149958b809aad37562, type: 2}
-  Speed: 4
-  FireRate: 1
+  SpawnEffect: {fileID: 100000, guid: 06b09dfd0b970004fb7c6fd6c6d129cc, type: 2}
+  Speed: 6
+  FireRate: 2
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

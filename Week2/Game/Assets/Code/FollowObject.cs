@@ -5,7 +5,7 @@ public class FollowObject : MonoBehaviour
 {
     public Transform Target;
     public Vector2 Offset;
-    public GameObject Frame;
+    public GameObject GUIFrame;
 
     private Transform myTransform;
 
@@ -21,7 +21,7 @@ public class FollowObject : MonoBehaviour
         min = c.Min;
         max = c.Max;
 
-        frameHalfSize = Frame.transform.localScale / 2;
+        frameHalfSize = GUIFrame.transform.localScale / 2;
         frameHalfSize += new Vector2(0.6f, 0.6f); // small offset
     }
 
