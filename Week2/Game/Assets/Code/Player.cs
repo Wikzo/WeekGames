@@ -125,14 +125,27 @@ public class Player : MonoBehaviour, ITakeDamage
                 var touchPos = Input.GetTouch(0).position;
 
                 if (touchPos.x > Screen.width / 2)
+                {
                     normalizedHorizontalSpeed = 1;
+
+                    if (!isFacingRight)
+                        Flip();
+                }
                 else
+                {
                     normalizedHorizontalSpeed = -1;
+
+                    if (isFacingRight)
+                        Flip();
+                }
             }
             else if (touchCount == 2 && controller.CanJump)
                 controller.Jump();
         }
-#endif
+        else
+            normalizedHorizontalSpeed = 0;
+
+#else
 
         if (Input.GetKey(KeyCode.D))
         {
@@ -159,6 +172,8 @@ public class Player : MonoBehaviour, ITakeDamage
 
         if (Input.GetKeyDown(KeyCode.Space))
             FireProjectile();
+#endif
+
     }
 
     private void FireProjectile()
