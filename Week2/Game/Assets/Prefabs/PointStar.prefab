@@ -26,6 +26,7 @@ GameObject:
   - 4: {fileID: 400002}
   - 58: {fileID: 5800000}
   - 114: {fileID: 11400000}
+  - 95: {fileID: 9500000}
   m_Layer: 0
   m_Name: PointStar
   m_TagString: Untagged
@@ -69,6 +70,20 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_Radius: .649999976
   m_Center: {x: 0, y: -.0599999987}
+--- !u!95 &9500000
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e7aa6dedb762f5a49a4eb6f65d2dc504, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_HasTransformHierarchy: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,6 +98,8 @@ MonoBehaviour:
   Effect: {fileID: 100000, guid: 1ed8a914ba03d0843b130f89e7a79a1d, type: 2}
   PointsToAdd: 10
   HitStarSound: {fileID: 8300000, guid: 62e145b91553b8e48a159f076a14e2eb, type: 3}
+  Animator: {fileID: 9500000}
+  Renderer: {fileID: 21200000}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

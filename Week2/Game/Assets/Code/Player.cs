@@ -24,6 +24,8 @@ public class Player : MonoBehaviour, ITakeDamage
     public AudioClip PlayerGetHealthSound;
     private AudioSource audioSource;
 
+    public Animator Animator;
+
     public Projectile ProjectileToShoot;
     public GameObject FireProjectileEffect;
     public float FireRate;
@@ -57,7 +59,11 @@ public class Player : MonoBehaviour, ITakeDamage
         var movementFactor = controller.State.IsGrounded ? SpeedAccelerationOnGround : SpeedAccelerationInAir;
         var horizontalForce = IsDead ? 0 : Mathf.Lerp(controller.Velocity.x, normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * movementFactor);
         controller.SetHorizontalForce(horizontalForce);
-        
+
+        Animator.SetBool("IsGrounded", controller.State.IsGrounded);
+        Animator.SetBool("IsDead", IsDead);
+        Animator.SetFloat("Speed", Mathf.Abs(controller.Velocity.x) / MaxSpeed); // between 0 and 1
+
     }
 
     public void Kill()
@@ -147,8 +153,8 @@ public class Player : MonoBehaviour, ITakeDamage
 
         canFireIn = FireRate;
 
-        //AudioSource.PlayClipAtPoint(PlayerShootSound, transform.position); // doesn't require AudioSource component!
         audioSource.PlayOneShot(PlayerShootSound);
+        Animator.SetTrigger("Fire");
     }
 
     private void Flip()
