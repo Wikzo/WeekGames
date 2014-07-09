@@ -411,7 +411,7 @@ MonoBehaviour:
     MaxVelocity: {x: 3.40282347e+38, y: 3.40282347e+38}
     SlopeLimit: 30
     Gravity: -25
-    JumpRestrictions: 1
+    JumpRestrictions: 0
     JumpFrequency: .25
     JumpMagnitude: 16
 --- !u!114 &11400002

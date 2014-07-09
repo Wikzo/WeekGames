@@ -111,6 +111,29 @@ public class Player : MonoBehaviour, ITakeDamage
 
     private void HandleInput()
     {
+#if UNITY_ANDROID
+        // touch input (test)
+        if (Input.touchCount > 0)
+        {
+            var touchCount = Input.touchCount;
+
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+                FireProjectile();
+
+            if (touchCount == 1)
+            {
+                var touchPos = Input.GetTouch(0).position;
+
+                if (touchPos.x > Screen.width / 2)
+                    normalizedHorizontalSpeed = 1;
+                else
+                    normalizedHorizontalSpeed = -1;
+            }
+            else if (touchCount == 2 && controller.CanJump)
+                controller.Jump();
+        }
+#endif
+
         if (Input.GetKey(KeyCode.D))
         {
             normalizedHorizontalSpeed = 1;
@@ -128,10 +151,13 @@ public class Player : MonoBehaviour, ITakeDamage
         else
             normalizedHorizontalSpeed = 0;
 
-        if (controller.CanJump && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)))
+        if (controller.CanJump && (Input.GetKeyDown(KeyCode.W)))// || Input.GetKeyDown(KeyCode.Space))) //|| Input.GetMouseButtonDown(1)))
             controller.Jump();
 
-        if (Input.GetMouseButtonDown(0))
+        /*if (Input.GetMouseButtonDown(0))
+            FireProjectile();*/
+
+        if (Input.GetKeyDown(KeyCode.Space))
             FireProjectile();
     }
 
