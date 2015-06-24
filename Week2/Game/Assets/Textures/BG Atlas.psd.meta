@@ -1,6 +1,10 @@
 fileFormatVersion: 2
 guid: 50127dd24fef63d408ac14a63fcf84f5
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: Mountains_blue
+    21300002: Mountains_green
+    21300004: Background
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

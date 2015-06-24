@@ -1,6 +1,16 @@
 fileFormatVersion: 2
 guid: fbc73ba0601994c45baf870d93fb5530
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: Body
+    21300002: RightEye
+    21300004: RightEyeWhite
+    21300006: LeftEye
+    21300008: LeftEyeWhite
+    21300010: LeftHand
+    21300012: RightFoot
+    21300014: LeftFoot
+    21300016: RightHand
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

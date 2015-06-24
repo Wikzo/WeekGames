@@ -1,6 +1,30 @@
 fileFormatVersion: 2
 guid: 8d8bcacaa0f001b4f963284315eff813
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: Bubbles
+    21300002: Grass
+    21300004: PunjiSticks
+    21300006: HealthPack
+    21300008: WaterTrap
+    21300010: Cannon
+    21300012: Grass2
+    21300014: Star
+    21300016: UpperCave
+    21300018: Platform
+    21300020: LowerCave
+    21300022: Tree
+    21300024: Tube
+    21300026: BadFish
+    21300028: Rocks
+    21300030: RedSaw
+    21300032: DirtFull
+    21300034: BlueSaw
+    21300036: Microphone
+    21300038: UpperCasePiece1
+    21300040: UpperCasePiece2
+    21300042: JumpPad
+    21300044: DirtMid
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

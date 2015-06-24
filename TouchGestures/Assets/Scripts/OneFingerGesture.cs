@@ -39,7 +39,6 @@ public class OneFingerGesture : MonoBehaviour
                     }
                     else
                     {
-
                         if (Mathf.Abs(v2_current.x - v2_prev.x) > Mathf.Abs(v2_current.y - v2_prev.y))
                             swipeMessage += "right";
                         else

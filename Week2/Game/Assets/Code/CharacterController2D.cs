@@ -223,7 +223,7 @@ public class CharacterController2D : MonoBehaviour
             // deltaMovement is used, so rays won't be de-synced by 1 frame
             var rayVector = new Vector2(deltaMovement.x + rayOrigin.x, deltaMovement.y + rayOrigin.y + (i * verticalDistanceBetweenRays));
             
-            //Debug.DrawRay(rayVector, rayDirection * halfWidth, isRight ? Color.cyan : Color.magenta);
+            Debug.DrawRay(rayVector, rayDirection * halfWidth, isRight ? Color.cyan : Color.magenta);
 
             var raycastHit = Physics2D.Raycast(rayVector, rayDirection, halfWidth, PlatformMask);
             if (!raycastHit)
@@ -232,6 +232,8 @@ public class CharacterController2D : MonoBehaviour
             // calculate displacement to move the player away from platform (inverse direction)
             // offset = (hitPoint-centerPoint) - halfWidthPoint
             offset = isRight ? ((raycastHit.point.x - _transform.position.x) - halfWidth) : (halfWidth - (_transform.position.x - raycastHit.point.x));
+
+            Debug.Log("Hit");
         }
 
         deltaMovement.x += offset; // push player away from moving platform
